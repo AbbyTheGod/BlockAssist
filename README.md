@@ -85,31 +85,23 @@ Windows 11 with WSL2 has built-in GUI support, so no additional X server is need
    ```
 
 8. **Install Node Version Manager (NVM) and Node.js:**
-    ```bash
-    curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-    nvm install --lts
-    nvm alias default 'lts/*'
-    nvm use default
-    ```
+   ```bash
+   curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+   export NVM_DIR="$HOME/.nvm"
+   [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+   nvm install --lts
+   nvm alias default 'lts/*'
+   nvm use default
+   ```
 
-13. **Enable Corepack and Install Yarn:**
-    ```bash
-    corepack enable
-    corepack prepare yarn@stable --activate
-    node -v
-    npm -v
-    yarn -v
-    ```
-
-14. **Verify Installation:**
-    ```bash
-    python --version
-    java -version
-    node --version
-    yarn --version
-    ```
+9. **Enable Corepack and Install Yarn:**
+   ```bash
+   corepack enable
+   corepack prepare yarn@stable --activate
+   node -v
+   npm -v
+   yarn -v
+   ```
 
 ### Step 4: Configure Display Settings (Optional)
 
@@ -179,12 +171,7 @@ Windows 11 WSL2 handles GUI applications automatically, but you can optionally c
 
 ### Step 7: Run BlockAssist
 
-1. **Activate the Virtual Environment:**
-   ```bash
-   source blockassist-venv/bin/activate
-   ```
-
-3. **Start BlockAssist:**
+1. **Start BlockAssist:**
    ```bash
    python3 run.py
    ```
