@@ -39,6 +39,14 @@ libreadline-dev libsqlite3-dev curl git libncursesw5-dev xz-utils tk-dev \
 libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev zip unzip openjdk-8-jdk
 ```
 
+Verify Java installed:
+
+```bash
+java -version
+```
+
+Should show: `openjdk version "1.8.x"`
+
 ---
 
 ### Step 3: Install pyenv
@@ -151,6 +159,14 @@ pip install -e .
 pip install psutil readchar rich
 ```
 
+Verify Malmo installed:
+
+```bash
+python -c "import pkgutil; print('malmo' in [m.name for m in pkgutil.iter_modules()])"
+```
+
+Should show: `True`
+
 ---
 
 ### Step 9: Login to Gensyn
@@ -209,7 +225,58 @@ python3 run.py
 
 ---
 
+## ⚡ Optional: GPU Acceleration
+
+**For NVIDIA GPU users only** - skip if you don't have an NVIDIA GPU:
+
+```bash
+# Download cuDNN
+wget https://developer.download.nvidia.com/compute/cudnn/9.11.0/local_installers/cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb
+```
+
+```bash
+# Install package
+sudo dpkg -i cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb
+```
+
+```bash
+# Add GPG key
+sudo cp /var/cudnn-local-repo-ubuntu2204-9.11.0/cudnn-local-4EC753EA-keyring.gpg /usr/share/keyrings/
+```
+
+```bash
+# Configure repository
+echo "deb [signed-by=/usr/share/keyrings/cudnn-local-4EC753EA-keyring.gpg] file:///var/cudnn-local-repo-ubuntu2204-9.11.0 /" | sudo tee /etc/apt/sources.list.d/cudnn-local.list
+```
+
+```bash
+# Install cuDNN
+sudo apt update
+```
+
+```bash
+sudo apt install -y libcudnn9 libcudnn9-dev
+```
+
+```bash
+# Set library path
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+```
+
+```bash
+source ~/.bashrc
+```
+
+---
+
 ## 🔧 Quick Fixes
+
+**Test if GUI works?**
+```bash
+sudo apt install -y x11-apps
+xeyes
+```
+A small window with eyes should appear.
 
 **Minecraft won't open?**
 ```bash
