@@ -84,30 +84,7 @@ Windows 11 with WSL2 has built-in GUI support, so no additional X server is need
    pyenv global 3.10.0
    ```
 
-8. **Create and Activate Virtual Environment:**
-   ```bash
-   python3 -m venv blockassist-venv
-   source blockassist-venv/bin/activate
-   ```
-
-9. **Install BlockAssist Python Dependencies:**
-   ```bash
-   pip install --upgrade pip setuptools wheel
-   pip install -e .
-   ```
-
-10. **Install Additional Required Packages:**
-    ```bash
-    pip install psutil readchar rich
-    ```
-
-11. **Install Zip Utilities:**
-    ```bash
-    sudo apt update
-    sudo apt install -y zip unzip
-    ```
-
-12. **Install Node Version Manager (NVM) and Node.js:**
+8. **Install Node Version Manager (NVM) and Node.js:**
     ```bash
     curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
     export NVM_DIR="$HOME/.nvm"
@@ -170,14 +147,39 @@ Windows 11 WSL2 handles GUI applications automatically, but you can optionally c
    - Log in to your Gensyn Testnet account
    - After login, press `Ctrl+C` to stop the server
 
-### Step 6: Run BlockAssist
+### Step 6: Create Virtual Environment and Install Dependencies
 
 1. **Navigate to the BlockAssist Directory:**
    ```bash
    cd ~/blockassist
    ```
 
-2. **Activate the Virtual Environment:**
+2. **Create and Activate Virtual Environment:**
+   ```bash
+   python3 -m venv blockassist-venv
+   source blockassist-venv/bin/activate
+   ```
+
+3. **Install BlockAssist Python Dependencies:**
+   ```bash
+   pip install --upgrade pip setuptools wheel
+   pip install -e .
+   ```
+
+4. **Install Additional Required Packages:**
+   ```bash
+   pip install psutil readchar rich
+   ```
+
+5. **Install Zip Utilities:**
+   ```bash
+   sudo apt update
+   sudo apt install -y zip unzip
+   ```
+
+### Step 7: Run BlockAssist
+
+1. **Activate the Virtual Environment:**
    ```bash
    source blockassist-venv/bin/activate
    ```
