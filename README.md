@@ -55,12 +55,19 @@ Windows 11 with WSL2 has built-in GUI support, so no additional X server is need
    cd blockassist
    ```
 
-4. **Run the Setup Script:**
+4. **Install Java (Required for Minecraft):**
    ```bash
+   sudo apt install -y openjdk-8-jdk
+   java -version
+   ```
+
+5. **Run the Setup Script:**
+   ```bash
+   chmod +x setup.sh
    ./setup.sh
    ```
 
-5. **Install and Configure `pyenv`:**
+6. **Install and Configure `pyenv`:**
    ```bash
    curl -fsSL https://pyenv.run | bash
    export PYENV_ROOT="$HOME/.pyenv"
@@ -71,18 +78,25 @@ Windows 11 with WSL2 has built-in GUI support, so no additional X server is need
    source ~/.bashrc
    ```
 
-6. **Install Python 3.10:**
+7. **Install Python 3.10:**
    ```bash
    pyenv install 3.10.0
    pyenv global 3.10.0
    ```
 
-7. **Install Required Python Packages:**
+8. **Create and Activate Virtual Environment:**
    ```bash
-   pip install psutil readchar rich
+   python -m venv blockassist-venv
+   source blockassist-venv/bin/activate
    ```
 
-8. **Install Node Version Manager (NVM) and Node.js:**
+9. **Install BlockAssist Python Dependencies:**
+   ```bash
+   pip install --upgrade pip setuptools wheel
+   pip install -e .
+   ```
+
+10. **Install Node Version Manager (NVM) and Node.js:**
    ```bash
    curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
    export NVM_DIR="$HOME/.nvm"
@@ -92,13 +106,21 @@ Windows 11 with WSL2 has built-in GUI support, so no additional X server is need
    nvm use default
    ```
 
-9. **Enable Corepack and Install Yarn:**
+11. **Enable Corepack and Install Yarn:**
    ```bash
    corepack enable
    corepack prepare yarn@stable --activate
    node -v
    npm -v
    yarn -v
+   ```
+
+12. **Verify Installation:**
+   ```bash
+   python --version
+   java -version
+   node --version
+   yarn --version
    ```
 
 ### Step 4: Configure Display Settings (Optional)
