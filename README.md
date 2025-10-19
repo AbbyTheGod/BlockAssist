@@ -81,7 +81,7 @@ pyenv global 3.10.0
 
 **Set up isolated Python environment:**
 ```bash
-python -m venv blockassist-venv
+python3 -m venv blockassist-venv
 source blockassist-venv/bin/activate
 ```
 
