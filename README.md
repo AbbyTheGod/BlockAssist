@@ -10,7 +10,7 @@ Before you begin, ensure you have:
 - **Ubuntu 22.04 LTS** installed within WSL
 - At least **12 GB RAM** (32 GB recommended)
 - **Git** installed on both Windows and WSL
-- A **Hugging Face** account with a Write-access API token
+- A **Hugging Face** account with a Write-access API token ([Create account](https://huggingface.co/join) | [Get API token](https://huggingface.co/settings/tokens))
 - A **Gensyn Testnet** account (you'll be prompted to create one during setup if you don't have it)
 
 ## 🚀 Installation Steps
@@ -219,6 +219,7 @@ source ~/.bashrc
 ## 📚 Additional Resources
 
 - [Gensyn BlockAssist Documentation](https://docs.gensyn.ai/testnet/blockassist/getting-started/windows-wsl-2)
+- [Hugging Face Platform](https://huggingface.co/)
 - [WSL Official Documentation](https://docs.microsoft.com/en-us/windows/wsl/)
 
 ## 🤝 Getting Help
