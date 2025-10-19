@@ -265,6 +265,25 @@ source ~/.bashrc
 - Try running commands with `sudo` when necessary
 - Check file permissions: `ls -la`
 
+## 🚀 Daily Startup Process
+
+When you want to restart BlockAssist after shutdown:
+
+1. **Navigate to BlockAssist Directory:**
+   ```bash
+   cd ~/blockassist
+   ```
+
+2. **Activate Virtual Environment:**
+   ```bash
+   source blockassist-venv/bin/activate
+   ```
+
+3. **Run BlockAssist:**
+   ```bash
+   python3 run.py
+   ```
+
 ## 📚 Additional Resources
 
 ### Official Documentation
@@ -291,25 +310,6 @@ If you encounter issues not covered in this guide:
 1. Check the [official Gensyn documentation](https://docs.gensyn.ai/)
 2. Visit the [Gensyn Discord community](https://discord.gg/gensyn)
 3. Open an issue on the [BlockAssist GitHub repository](https://github.com/gensyn-ai/blockassist)
-
-## 🚀 Daily Startup Process
-
-When you want to restart BlockAssist after shutdown:
-
-1. **Navigate to BlockAssist Directory:**
-   ```bash
-   cd ~/blockassist
-   ```
-
-2. **Activate Virtual Environment:**
-   ```bash
-   source blockassist-venv/bin/activate
-   ```
-
-3. **Run BlockAssist:**
-   ```bash
-   python3 run.py
-   ```
 
 ## 📝 Notes
 
