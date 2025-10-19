@@ -32,20 +32,9 @@ Before you begin, ensure you have:
    - Launch the **Ubuntu** app from the Start menu
    - Create a new UNIX username and password when prompted
 
-### Step 2: Install VcXsrv (X Server for Windows)
+### Step 2: Enable WSL GUI Support (Windows 11)
 
-1. **Download and Install VcXsrv:**
-   - Download VcXsrv from [SourceForge](https://sourceforge.net/projects/vcxsrv/)
-   - Run the installer and follow the installation prompts
-
-2. **Configure VcXsrv:**
-   - Launch **XLaunch** from the Start menu
-   - Select **Multiple windows** and click **Next**
-   - Choose **Start no client** and click **Next**
-   - On the **Extra settings** page:
-     - ✅ Check **Disable access control**
-     - ❌ Uncheck **Native OpenGL**
-   - Click **Finish** to start the server
+Windows 11 with WSL2 has built-in GUI support, so no additional X server is needed. The GUI applications will run natively through WSL.
 
 ### Step 3: Set Up BlockAssist in WSL
 
@@ -112,33 +101,23 @@ Before you begin, ensure you have:
    yarn -v
    ```
 
-### Step 4: Configure Display Settings
+### Step 4: Configure Display Settings (Optional)
 
-1. **Find Your Windows IP Address:**
-   - Open **Command Prompt** on Windows and run:
-     ```cmd
-     ipconfig
-     ```
-   - Note the **IPv4 Address** (e.g., `192.168.1.10`)
+Windows 11 WSL2 handles GUI applications automatically, but you can optionally configure display settings:
 
-2. **Set the DISPLAY Variable in WSL:**
-   ```bash
-   export DISPLAY=<WINDOWS_IP>:0
-   ```
-   Replace `<WINDOWS_IP>` with your actual Windows IP address
-
-3. **Make DISPLAY Setting Permanent:**
-   ```bash
-   echo 'export DISPLAY=<WINDOWS_IP>:0' >> ~/.bashrc
-   source ~/.bashrc
-   ```
-
-4. **Test X11 Forwarding:**
+1. **Test GUI Support:**
    ```bash
    sudo apt install -y x11-apps
    xeyes
    ```
-   If the `xeyes` application appears, the X11 forwarding is working correctly
+   If the `xeyes` application appears, GUI support is working correctly
+
+2. **If GUI doesn't work, set DISPLAY variable:**
+   ```bash
+   export DISPLAY=:0
+   echo 'export DISPLAY=:0' >> ~/.bashrc
+   source ~/.bashrc
+   ```
 
 ### Step 5: Run BlockAssist
 
@@ -166,9 +145,9 @@ Before you begin, ensure you have:
 ## 🔧 Troubleshooting
 
 ### Minecraft Window Not Opening
-- Ensure the `DISPLAY` variable is set correctly
-- Verify that VcXsrv is running without errors
-- Check that your Windows firewall isn't blocking the connection
+- Test GUI support with: `xeyes`
+- If needed, set DISPLAY variable: `export DISPLAY=:0`
+- Ensure WSL2 is running: `wsl --status`
 
 ### Black Screen or OpenGL Crash
 Enable software rendering by setting the following environment variables:
@@ -204,7 +183,6 @@ source ~/.bashrc
 
 - [Gensyn BlockAssist Documentation](https://docs.gensyn.ai/testnet/blockassist/getting-started/windows-wsl-2)
 - [WSL Official Documentation](https://docs.microsoft.com/en-us/windows/wsl/)
-- [VcXsrv Documentation](https://sourceforge.net/projects/vcxsrv/)
 
 ## 🤝 Getting Help
 
@@ -216,7 +194,7 @@ If you encounter issues not covered in this guide:
 
 ## 📝 Notes
 
-- Keep VcXsrv running while using BlockAssist
+- Windows 11 WSL2 provides native GUI support - no additional X server needed
 - The first run may take longer as it downloads Minecraft and other dependencies
 - Ensure you have sufficient disk space (at least 5GB free)
 - For best performance, close unnecessary applications while running BlockAssist
