@@ -1,28 +1,30 @@
-# 🎮 Gensyn BlockAssist v0.1.0 on Windows 11 WSL
+# Gensyn BlockAssist Installation Guide for Windows 11 WSL
 
-**BlockAssist v0.1.0 has been released with important fixes, including a HuggingFace update that all users need to apply.**
+Complete installation guide for running Gensyn BlockAssist v0.1.0 on Windows 11 using WSL2.
 
-⚡️ **Action Required:** Please wipe & reclone BlockAssist, then follow the official guide below.
-
----
-
-## ✅ Prerequisites
-
-* 🖥️ **Windows 11** with WSL 2 installed
-* 🐧 **Ubuntu 22.04 LTS** (or your preferred Linux distro) installed in WSL
-* 🐍 **Python 3.10+** installed
-* 🔧 **Git** installed
-* 🧠 **Hugging Face account** with Write-access API token
-* 📦 **Poetry** for Python dependency management
-* 🟢 **Node.js and Yarn** for the login interface
+**Important:** If you're upgrading from a previous version, clean install is recommended. Remove old files and follow this guide from the beginning.
 
 ---
 
-## 🛠️ Installation Steps
+## 📋 What You Need
 
-### 🧱 Step 1: Clone and Setup BlockAssist in WSL
+Before starting, ensure you have:
 
-Open your WSL terminal and run these commands **one by one**:
+* **Windows 11** with WSL 2 capability
+* **Ubuntu 22.04 LTS** running in WSL (or compatible Linux distribution)
+* **Python 3.10 or higher**
+* **Git** for version control
+* **Hugging Face account** with API token access ([Create account](https://huggingface.co/join) | [Get token](https://huggingface.co/settings/tokens))
+* **Poetry** for managing Python dependencies
+* **Node.js and Yarn** for web interface functionality
+
+---
+
+## 🚀 Setup Instructions
+
+### Part 1: Repository Setup and System Configuration
+
+Launch your WSL terminal and execute these commands in sequence:
 
 ```bash
 # Remove old installation (if exists)
@@ -87,7 +89,9 @@ pip install psutil readchar
 
 ---
 
-### ⚡ Step 2: Install Node.js and Yarn
+### Part 2: JavaScript Runtime Installation
+
+Configure Node.js and Yarn for the web-based login interface:
 
 ```bash
 # Install Node.js via nvm (Node Version Manager)
@@ -121,7 +125,7 @@ corepack enable
 corepack prepare yarn@stable --activate
 ```
 
-Verify installations:
+Confirm successful installation:
 
 ```bash
 node -v
@@ -137,7 +141,9 @@ yarn -v
 
 ---
 
-### 🧠 Step 3: (Optional) Install and Configure cuDNN for Nvidia GPU Support
+### Part 3: GPU Acceleration (Optional - NVIDIA Users Only)
+
+Skip this section if you don't have an NVIDIA graphics card. For GPU acceleration:
 
 ```bash
 wget https://developer.download.nvidia.com/compute/cudnn/9.11.0/local_installers/cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb
@@ -174,7 +180,9 @@ source ~/.bashrc
 
 ---
 
-### 📦 Step 4: Install Poetry (Python Dependency Manager)
+### Part 4: Poetry Setup (Dependency Manager)
+
+Install Poetry for advanced Python package management:
 
 ```bash
 curl -sSL https://install.python-poetry.org | python3 -
@@ -194,7 +202,9 @@ poetry --version
 
 ---
 
-### 🧰 Step 5: Install psutil, readchar, and rich
+### Part 5: Additional Python Libraries
+
+Install remaining Python dependencies:
 
 ```bash
 pip install psutil readchar rich
@@ -202,9 +212,11 @@ pip install psutil readchar rich
 
 ---
 
-### 🔐 Step 6: Login to Gensyn Modal
+### Part 6: Authentication Setup
 
-**1)** First, go to the modal-login directory and start the login server:
+Configure your Gensyn account access:
+
+**Step 1:** Navigate to login directory and install dependencies
 
 ```bash
 cd modal-login
@@ -218,9 +230,9 @@ yarn install
 yarn dev
 ```
 
-**2)** Open your browser at `http://localhost:3000` and log in to Gensyn.
+**Step 2:** Access `http://localhost:3000` in your web browser and complete the Gensyn login process.
 
-**After login enter `Ctrl+C` on your terminal and run:**
+**Step 3:** After successful authentication, return to terminal and press `Ctrl+C`, then execute:
 
 ```bash
 cd
@@ -232,9 +244,11 @@ cd blockassist
 
 ---
 
-### 🧩 Step 7: Activate Environment & Install BlockAssist Locally (Malmo Fix) 🛠️
+### Part 7: Final Configuration and Malmo Package Setup
 
-**1)** Activate the same venv
+Complete the installation by setting up the Python environment:
+
+**Step 1:** Create and activate isolated environment
 
 ```bash
 python3 -m venv blockassist-venv
@@ -244,19 +258,19 @@ python3 -m venv blockassist-venv
 source blockassist-venv/bin/activate
 ```
 
-**2)** Make sure build tools are fine
+**Step 2:** Update core Python tools
 
 ```bash
 python -m pip install --upgrade pip setuptools wheel
 ```
 
-**3)** Install the repo in editable mode so Python can import its packages (including `malmo`)
+**Step 3:** Install BlockAssist in development mode (enables Malmo package import)
 
 ```bash
 pip install -e .
 ```
 
-**Check if malmo is available**
+**Step 4:** Verify Malmo availability
 
 ```bash
 python - <<'PY'
@@ -265,7 +279,7 @@ print('malmo' in [m.name for m in pkgutil.iter_modules()])
 PY
 ```
 
-**4)** Install Zip Utilities
+**Step 5:** Install compression utilities
 
 ```bash
 sudo apt update
@@ -275,7 +289,7 @@ sudo apt update
 sudo apt install -y zip unzip
 ```
 
-**5)** Now run BlockAssist:
+**Step 6:** Launch the application
 
 ```bash
 python3 run.py
@@ -283,21 +297,23 @@ python3 run.py
 
 ---
 
-## Now it will ask for Hugging Face token: `Paste your token`
+## When prompted, provide your Hugging Face API token
 
-## And soon your Minecraft game will open
+## Minecraft will launch automatically
 
-> **Note:** Windows 11 WSL2 has native GUI support! Minecraft windows open automatically without needing VcXsrv or any X server.
+> **Windows 11 Advantage:** Native GUI support means Minecraft opens automatically without additional X server configuration.
 
-`1. Press Enter in the terminal again.`
-
-`2. Select your game screen, then press Enter again inside the screen.`
+**Usage Instructions:**
+1. Enter your token when prompted
+2. Wait for Minecraft windows to appear (managed automatically)
+3. Press Enter in the terminal
+4. Click the game window and press Enter again
 
 ---
 
-## 🚀 How To Start BlockAssist the Next Day
+## 🔄 Daily Restart Procedure
 
-Follow these steps whenever you want to restart BlockAssist after shutdown:
+Use this streamlined process for subsequent sessions:
 
 ```bash
 cd blockassist
@@ -309,7 +325,7 @@ eval "$(pyenv init - bash)"
 eval "$(pyenv virtualenv-init -)"
 ```
 
-Now run BlockAssist:
+Start BlockAssist:
 
 ```bash
 source blockassist-venv/bin/activate
@@ -321,14 +337,14 @@ python3 run.py
 
 ---
 
-## 🔧 Troubleshooting
+## 🔧 Common Issues and Solutions
 
-### GUI Not Working?
+### Display Problems
 
-Windows 11 WSL2 handles GUI automatically. If Minecraft doesn't open:
+Windows 11 includes native WSL GUI support. If display issues occur:
 
 ```bash
-# Test GUI support
+# Verify GUI functionality
 sudo apt install -y x11-apps
 ```
 
@@ -336,15 +352,15 @@ sudo apt install -y x11-apps
 xeyes
 ```
 
-If that doesn't work:
+If issues persist:
 
 ```bash
 export DISPLAY=:0
 ```
 
-### Graphics Issues?
+### Rendering Issues
 
-Enable software rendering:
+For graphics glitches, enable software rendering:
 
 ```bash
 export LIBGL_ALWAYS_SOFTWARE=1
@@ -355,13 +371,13 @@ export MESA_GL_VERSION_OVERRIDE=2.1
 
 ---
 
-## 📚 Resources
+## 📚 Helpful Links
 
-- [Official Gensyn Documentation](https://docs.gensyn.ai/)
-- [BlockAssist GitHub](https://github.com/gensyn-ai/blockassist)
-- [Hugging Face](https://huggingface.co/)
-- [Get HuggingFace Token](https://huggingface.co/settings/tokens)
+- [Gensyn Official Documentation](https://docs.gensyn.ai/)
+- [BlockAssist Source Repository](https://github.com/gensyn-ai/blockassist)
+- [Hugging Face Platform](https://huggingface.co/)
+- [Generate API Token](https://huggingface.co/settings/tokens)
 
 ---
 
-**Happy building with Gensyn BlockAssist! 🎮✨**
+**Ready to build with AI-powered Minecraft! 🎮✨**
