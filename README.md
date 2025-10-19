@@ -1,187 +1,67 @@
 # Gensyn BlockAssist Installation Guide for Windows 11 WSL
 
-This guide will walk you through installing and setting up Gensyn BlockAssist on Windows 11 using the Windows Subsystem for Linux (WSL).
+A comprehensive guide for setting up Gensyn BlockAssist on Windows 11 using Windows Subsystem for Linux (WSL2).
 
-## 📋 Prerequisites
+## 📋 System Requirements
 
-Before you begin, ensure you have:
+Before starting, ensure your system meets these requirements:
 
-- **Windows 11** with WSL 2 enabled
-- **Ubuntu 22.04 LTS** installed within WSL
-- At least **12 GB RAM** (32 GB recommended)
-- **Git** installed on both Windows and WSL
-- A **Hugging Face** account with a Write-access API token
-- A **Gensyn Testnet** account (you'll be prompted to create one during setup if you don't have it)
+- **Operating System:** Windows 11 with WSL2 enabled
+- **Linux Distribution:** Ubuntu 22.04 LTS (recommended)
+- **Memory:** Minimum 12 GB RAM (32 GB recommended for optimal performance)
+- **Storage:** At least 5 GB free disk space
+- **Accounts Required:**
+  - Hugging Face account with Write-access API token
+  - Gensyn Testnet account (created during setup if needed)
 
-## 🚀 Installation Steps
+## 🚀 Complete Installation Guide
 
-### Step 1: Enable WSL and Install Ubuntu 22.04 LTS
+### Phase 1: WSL Environment Setup
 
-1. **Enable WSL:**
-   - Open **PowerShell** as Administrator and run:
-     ```powershell
-     wsl --install
-     ```
-   - If Ubuntu 22.04 LTS isn't the default, specify it:
-     ```powershell
-     wsl --install -d Ubuntu-22.04
-     ```
-   - Restart your computer if prompted
+#### 1.1 Enable WSL2 and Install Ubuntu
 
-2. **Set Up Ubuntu:**
-   - Launch the **Ubuntu** app from the Start menu
-   - Create a new UNIX username and password when prompted
-
-### Step 2: Enable WSL GUI Support (Windows 11)
-
-Windows 11 with WSL2 has built-in GUI support, so no additional X server is needed. The GUI applications will run natively through WSL.
-
-### Step 3: Set Up BlockAssist in WSL
-
-1. **Open Ubuntu Terminal:**
-   - Launch the **Ubuntu** app
-
-2. **Update and Install Dependencies:**
-   ```bash
-   sudo apt update
-   sudo apt install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev \
-   libsqlite3-dev curl git libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev \
-   libffi-dev liblzma-dev
-   ```
-
-3. **Clone the BlockAssist Repository:**
-   ```bash
-   git clone https://github.com/gensyn-ai/blockassist.git
-   cd blockassist
-   ```
-
-4. **Install Java (Required for Minecraft):**
-   ```bash
-   sudo apt install -y openjdk-8-jdk
-   java -version
-   ```
-
-5. **Run the Setup Script:**
-   ```bash
-   chmod +x setup.sh
-   ./setup.sh
-   ```
-
-6. **Install and Configure `pyenv`:**
-   ```bash
-   curl -fsSL https://pyenv.run | bash
-   export PYENV_ROOT="$HOME/.pyenv"
-   [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-   eval "$(pyenv init --path)"
-   eval "$(pyenv init -)"
-   eval "$(pyenv virtualenv-init -)"
-   source ~/.bashrc
-   ```
-
-7. **Install Python 3.10:**
-   ```bash
-   pyenv install 3.10.0
-   pyenv global 3.10.0
-   ```
-
-8. **Create and Activate Virtual Environment:**
-   ```bash
-   python -m venv blockassist-venv
-   source blockassist-venv/bin/activate
-   ```
-
-9. **Install BlockAssist Python Dependencies:**
-   ```bash
-   pip install --upgrade pip setuptools wheel
-   pip install -e .
-   ```
-
-10. **Install Node Version Manager (NVM) and Node.js:**
-   ```bash
-   curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-   export NVM_DIR="$HOME/.nvm"
-   [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-   nvm install --lts
-   nvm alias default 'lts/*'
-   nvm use default
-   ```
-
-11. **Enable Corepack and Install Yarn:**
-   ```bash
-   corepack enable
-   corepack prepare yarn@stable --activate
-   node -v
-   npm -v
-   yarn -v
-   ```
-
-12. **Verify Installation:**
-   ```bash
-   python --version
-   java -version
-   node --version
-   yarn --version
-   ```
-
-### Step 4: Configure Display Settings (Optional)
-
-Windows 11 WSL2 handles GUI applications automatically, but you can optionally configure display settings:
-
-1. **Test GUI Support:**
-   ```bash
-   sudo apt install -y x11-apps
-   xeyes
-   ```
-   If the `xeyes` application appears, GUI support is working correctly
-
-2. **If GUI doesn't work, set DISPLAY variable:**
-   ```bash
-   export DISPLAY=:0
-   echo 'export DISPLAY=:0' >> ~/.bashrc
-   source ~/.bashrc
-   ```
-
-### Step 5: Run BlockAssist
-
-1. **Navigate to the BlockAssist Directory:**
-   ```bash
-   cd ~/blockassist
-   ```
-
-2. **Activate the Virtual Environment:**
-   ```bash
-   source blockassist-venv/bin/activate
-   ```
-
-3. **Start BlockAssist:**
-   ```bash
-   python3 run.py
-   ```
-   - When prompted, enter your **Hugging Face** API token
-   - A browser window will open for you to log in to your **Gensyn Testnet** account
-
-4. **Launch Minecraft:**
-   - The system will open two Minecraft windows. Do not close them manually; the application manages them
-   - Follow the on-screen instructions to interact with BlockAssist
-
-## 🔧 Troubleshooting
-
-### Minecraft Window Not Opening
-- Test GUI support with: `xeyes`
-- If needed, set DISPLAY variable: `export DISPLAY=:0`
-- Ensure WSL2 is running: `wsl --status`
-
-### Black Screen or OpenGL Crash
-Enable software rendering by setting the following environment variables:
-```bash
-export LIBGL_ALWAYS_SOFTWARE=1
-export MESA_LOADER_DRIVER_OVERRIDE=llvmpipe
-export LIBGL_ALWAYS_INDIRECT=1
-export MESA_GL_VERSION_OVERRIDE=2.1
+**Install WSL2:**
+```powershell
+# Run in PowerShell as Administrator
+wsl --install
 ```
 
-### "pyenv: command not found"
-Reinitialize `pyenv` and reload the shell:
+**Specify Ubuntu 22.04 if needed:**
+```powershell
+wsl --install -d Ubuntu-22.04
+```
+
+**Initial Ubuntu Setup:**
+- Launch Ubuntu from Start menu
+- Create your UNIX username and password
+- Restart computer if prompted
+
+#### 1.2 System Dependencies Installation
+
+**Update package lists and install essential tools:**
+```bash
+sudo apt update
+sudo apt install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
+libreadline-dev libsqlite3-dev curl git libncursesw5-dev xz-utils tk-dev \
+libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+```
+
+**Install Java (required for Minecraft):**
+```bash
+sudo apt install -y openjdk-8-jdk
+java -version  # Verify installation
+```
+
+### Phase 2: Python Environment Configuration
+
+#### 2.1 Install Python Version Manager
+
+**Install pyenv:**
+```bash
+curl -fsSL https://pyenv.run | bash
+```
+
+**Configure pyenv environment:**
 ```bash
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
@@ -191,36 +71,237 @@ eval "$(pyenv virtualenv-init -)"
 source ~/.bashrc
 ```
 
-### WSL Not Starting
-- Ensure WSL 2 is enabled: `wsl --set-default-version 2`
-- Update WSL: `wsl --update`
-- Restart WSL: `wsl --shutdown` then restart Ubuntu
+**Install Python 3.10:**
+```bash
+pyenv install 3.10.0
+pyenv global 3.10.0
+```
 
-### Permission Denied Errors
-- Ensure you're using the correct user permissions
-- Try running commands with `sudo` when necessary
-- Check file permissions: `ls -la`
+#### 2.2 Create Virtual Environment
+
+**Set up isolated Python environment:**
+```bash
+python -m venv blockassist-venv
+source blockassist-venv/bin/activate
+```
+
+**Upgrade pip and install core packages:**
+```bash
+pip install --upgrade pip setuptools wheel
+pip install psutil readchar rich
+```
+
+### Phase 3: BlockAssist Installation
+
+#### 3.1 Clone Repository
+
+**Get the latest BlockAssist code:**
+```bash
+git clone https://github.com/gensyn-ai/blockassist.git
+cd blockassist
+```
+
+**Make setup script executable and run:**
+```bash
+chmod +x setup.sh
+./setup.sh
+```
+
+#### 3.2 Install BlockAssist Dependencies
+
+**Install in development mode:**
+```bash
+pip install -e .
+```
+
+**Install additional utilities:**
+```bash
+sudo apt install -y zip unzip
+```
+
+### Phase 4: Node.js and Frontend Setup
+
+#### 4.1 Install Node.js via NVM
+
+**Install Node Version Manager:**
+```bash
+curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+```
+
+**Configure and install Node.js:**
+```bash
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+nvm install --lts
+nvm alias default 'lts/*'
+nvm use default
+```
+
+#### 4.2 Install Yarn Package Manager
+
+**Enable Corepack and install Yarn:**
+```bash
+corepack enable
+corepack prepare yarn@stable --activate
+```
+
+**Verify installations:**
+```bash
+node --version
+npm --version
+yarn --version
+```
+
+### Phase 5: GUI Configuration (Windows 11)
+
+Windows 11 WSL2 provides native GUI support, but you can verify functionality:
+
+**Test GUI support:**
+```bash
+sudo apt install -y x11-apps
+xeyes  # Should open a small window with animated eyes
+```
+
+**If GUI doesn't work, set display variable:**
+```bash
+export DISPLAY=:0
+echo 'export DISPLAY=:0' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### Phase 6: Authentication Setup
+
+#### 6.1 Gensyn Modal Login
+
+**Navigate to login directory:**
+```bash
+cd ~/blockassist/modal-login
+```
+
+**Install dependencies and start server:**
+```bash
+yarn install
+yarn dev
+```
+
+**Complete authentication:**
+- Open browser to `http://localhost:3000`
+- Log in to your Gensyn Testnet account
+- Press `Ctrl+C` to stop the server after login
+
+### Phase 7: Launch BlockAssist
+
+#### 7.1 Final Setup
+
+**Return to main directory:**
+```bash
+cd ~/blockassist
+```
+
+**Activate virtual environment:**
+```bash
+source blockassist-venv/bin/activate
+```
+
+#### 7.2 Start the Application
+
+**Launch BlockAssist:**
+```bash
+python3 run.py
+```
+
+**Complete the setup:**
+- Enter your Hugging Face API token when prompted
+- Two Minecraft windows will open automatically
+- Follow on-screen instructions for interaction
+
+## 🔧 Troubleshooting Guide
+
+### Common Issues and Solutions
+
+#### GUI Applications Not Displaying
+```bash
+# Test X11 forwarding
+xeyes
+
+# If needed, set display variable
+export DISPLAY=:0
+```
+
+#### OpenGL Rendering Issues
+```bash
+# Enable software rendering
+export LIBGL_ALWAYS_SOFTWARE=1
+export MESA_LOADER_DRIVER_OVERRIDE=llvmpipe
+export LIBGL_ALWAYS_INDIRECT=1
+export MESA_GL_VERSION_OVERRIDE=2.1
+```
+
+#### Python Environment Issues
+```bash
+# Reinitialize pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
+source ~/.bashrc
+```
+
+#### WSL Startup Problems
+```bash
+# Check WSL status
+wsl --status
+
+# Update WSL if needed
+wsl --update
+
+# Restart WSL
+wsl --shutdown
+# Then restart Ubuntu
+```
+
+## 🚀 Daily Usage
+
+### Starting BlockAssist After Shutdown
+
+**Quick start process:**
+```bash
+cd ~/blockassist
+source blockassist-venv/bin/activate
+python3 run.py
+```
+
+### Updating BlockAssist
+
+**For version updates:**
+```bash
+cd ~/blockassist
+git pull origin main
+pip install -e .
+```
 
 ## 📚 Additional Resources
 
-- [Gensyn BlockAssist Documentation](https://docs.gensyn.ai/testnet/blockassist/getting-started/windows-wsl-2)
-- [WSL Official Documentation](https://docs.microsoft.com/en-us/windows/wsl/)
+- [Official Gensyn Documentation](https://docs.gensyn.ai/)
+- [WSL Documentation](https://docs.microsoft.com/en-us/windows/wsl/)
+- [BlockAssist GitHub Repository](https://github.com/gensyn-ai/blockassist)
 
-## 🤝 Getting Help
+## 🤝 Support
 
-If you encounter issues not covered in this guide:
+If you encounter issues:
 
 1. Check the [official Gensyn documentation](https://docs.gensyn.ai/)
-2. Visit the [Gensyn Discord community](https://discord.gg/gensyn)
-3. Open an issue on the [BlockAssist GitHub repository](https://github.com/gensyn-ai/blockassist)
+2. Join the [Gensyn Discord community](https://discord.gg/gensyn)
+3. Report issues on the [BlockAssist GitHub repository](https://github.com/gensyn-ai/blockassist)
 
-## 📝 Notes
+## 📝 Important Notes
 
-- Windows 11 WSL2 provides native GUI support - no additional X server needed
-- The first run may take longer as it downloads Minecraft and other dependencies
-- Ensure you have sufficient disk space (at least 5GB free)
-- For best performance, close unnecessary applications while running BlockAssist
+- **Version Compatibility:** BlockAssist v0.1.0 requires fresh installation
+- **System Resources:** Close unnecessary applications for optimal performance
+- **Storage Requirements:** Ensure adequate disk space for Minecraft and dependencies
+- **GUI Support:** Windows 11 WSL2 provides native GUI support without additional X servers
 
 ---
 
-**Happy building with Gensyn BlockAssist! 🎮✨**
+**Ready to build with Gensyn BlockAssist! 🎮✨**
