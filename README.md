@@ -6,21 +6,73 @@ Complete installation guide for running Gensyn BlockAssist v0.1.0 on Windows 11 
 
 ---
 
-## 📋 What You Need
+## 💻 System Requirements
 
-Before starting, ensure you have:
+### Minimum Requirements:
+- **OS:** Windows 11 (64-bit)
+- **RAM:** 12 GB minimum
+- **Storage:** 10 GB free disk space
+- **Processor:** 4 cores minimum
+- **Internet:** Stable broadband connection
 
-* **Windows 11** with WSL 2 capability
-* **Ubuntu 22.04 LTS** running in WSL (or compatible Linux distribution)
-* **Python 3.10 or higher**
-* **Git** for version control
-* **Hugging Face account** with API token access ([Create account](https://huggingface.co/join) | [Get token](https://huggingface.co/settings/tokens))
-* **Poetry** for managing Python dependencies
-* **Node.js and Yarn** for web interface functionality
+### Recommended:
+- **RAM:** 32 GB or more
+- **Storage:** 20 GB+ free disk space
+- **Processor:** 8+ cores
+- **GPU:** NVIDIA GPU with CUDA support (optional, for better performance)
 
 ---
 
-## 🚀 Setup Instructions
+## 🔧 Step 0: Install WSL2 on Windows 11
+
+If you haven't installed WSL yet, follow these steps:
+
+### Enable WSL
+
+Open **PowerShell as Administrator** and run:
+
+```powershell
+wsl --install
+```
+
+This will install WSL2 with Ubuntu by default.
+
+**If you want Ubuntu 22.04 specifically:**
+
+```powershell
+wsl --install -d Ubuntu-22.04
+```
+
+### Complete Setup
+
+1. **Restart your computer** when prompted
+2. **Open Ubuntu** from the Start menu
+3. **Create a username and password** when asked (remember these!)
+4. **Update Ubuntu:**
+
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+Your WSL2 environment is now ready!
+
+---
+
+## 📋 What You'll Need
+
+Before starting installation, make sure you have:
+
+* ✅ **Windows 11** with WSL 2 installed (see above)
+* ✅ **Ubuntu 22.04 LTS** running in WSL
+* ✅ **Administrator access** to your Windows PC
+* ✅ **Hugging Face account** with API token ([Create account](https://huggingface.co/join) | [Get token](https://huggingface.co/settings/tokens))
+* ✅ **30-45 minutes** for complete installation
+
+**Note:** Python, Git, Poetry, Node.js, and Yarn will be installed during the setup process below.
+
+---
+
+## 🚀 Installation Steps
 
 ### Part 1: Repository Setup and System Configuration
 
