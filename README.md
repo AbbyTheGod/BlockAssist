@@ -1,61 +1,55 @@
-# Gensyn BlockAssist - Windows 11 Installation Guide
+# 🎮 Gensyn BlockAssist v0.1.0 on Windows 11 WSL
 
-Get Gensyn BlockAssist running on Windows 11 in under 30 minutes.
+**BlockAssist v0.1.0 has been released with important fixes, including a HuggingFace update that all users need to apply.**
 
----
-
-## ⚡ Before You Start
-
-- [ ] Windows 11 installed
-- [ ] At least 10GB free space
-- [ ] Create a [Hugging Face account](https://huggingface.co/join)
-- [ ] Get your [Hugging Face API token](https://huggingface.co/settings/tokens)
+⚡️ **Action Required:** Please wipe & reclone BlockAssist, then follow the official guide below.
 
 ---
 
-## 🚀 Installation (Copy & Run Each Command)
+## ✅ Prerequisites
 
-### Step 1: Install WSL
-
-Open **PowerShell as Administrator**:
-
-```powershell
-wsl --install -d Ubuntu-22.04
-```
-
-Restart your computer. Open Ubuntu from Start menu, create username and password.
+* 🖥️ **Windows 11** with WSL 2 installed
+* 🐧 **Ubuntu 22.04 LTS** (or your preferred Linux distro) installed in WSL
+* 🐍 **Python 3.10+** installed
+* 🔧 **Git** installed
+* 🧠 **Hugging Face account** with Write-access API token
+* 📦 **Poetry** for Python dependency management
+* 🟢 **Node.js and Yarn** for the login interface
 
 ---
 
-### Step 2: Install System Packages
+## 🛠️ Installation Steps
+
+### 🧱 Step 1: Clone and Setup BlockAssist in WSL
+
+Open your WSL terminal and run these commands **one by one**:
 
 ```bash
-sudo apt update
+# Remove old installation (if exists)
+rm -rf ~/blockassist
 ```
 
 ```bash
-sudo apt install -y make build-essential libssl-dev zlib1g-dev libbz2-dev \
-libreadline-dev libsqlite3-dev curl git libncursesw5-dev xz-utils tk-dev \
-libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev zip unzip openjdk-8-jdk
+# Clone the repository and enter its folder
+git clone https://github.com/gensyn-ai/blockassist.git
 ```
 
-Verify Java installed:
-
 ```bash
-java -version
+cd blockassist
 ```
 
-Should show: `openjdk version "1.8.x"`
-
----
-
-### Step 3: Install pyenv
+```bash
+# Install Core Dependencies
+./setup.sh
+```
 
 ```bash
+# Install and configure pyenv
 curl -fsSL https://pyenv.run | bash
 ```
 
 ```bash
+# Configure pyenv environment variables
 export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init - bash)"
@@ -63,14 +57,22 @@ eval "$(pyenv virtualenv-init -)"
 ```
 
 ```bash
+# Reload your shell environment
 source ~/.bashrc
 ```
 
----
-
-### Step 4: Install Python 3.10
+```bash
+# Update system and install dependencies (enter 'y' if prompted)
+sudo apt update
+```
 
 ```bash
+sudo apt install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev \
+curl git libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev liblzma-dev
+```
+
+```bash
+# Install Python 3.10 using pyenv and set it globally
 pyenv install 3.10.0
 ```
 
@@ -78,15 +80,22 @@ pyenv install 3.10.0
 pyenv global 3.10.0
 ```
 
+```bash
+# Install required Python packages
+pip install psutil readchar
+```
+
 ---
 
-### Step 5: Install Node.js
+### ⚡ Step 2: Install Node.js and Yarn
 
 ```bash
+# Install Node.js via nvm (Node Version Manager)
 curl -fsSL https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 ```
 
 ```bash
+# Install latest LTS Node.js and set as default
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 ```
@@ -103,11 +112,8 @@ nvm alias default 'lts/*'
 nvm use default
 ```
 
----
-
-### Step 6: Install Yarn
-
 ```bash
+# Enable Corepack and install Yarn
 corepack enable
 ```
 
@@ -115,61 +121,90 @@ corepack enable
 corepack prepare yarn@stable --activate
 ```
 
----
-
-### Step 7: Get BlockAssist
+Verify installations:
 
 ```bash
-git clone https://github.com/gensyn-ai/blockassist.git
+node -v
 ```
 
 ```bash
-cd blockassist
+npm -v
 ```
 
 ```bash
-chmod +x setup.sh
-```
-
-```bash
-./setup.sh
+yarn -v
 ```
 
 ---
 
-### Step 8: Set Up Python Environment
+### 🧠 Step 3: (Optional) Install and Configure cuDNN for Nvidia GPU Support
 
 ```bash
-python3 -m venv blockassist-venv
+wget https://developer.download.nvidia.com/compute/cudnn/9.11.0/local_installers/cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb
 ```
 
 ```bash
-source blockassist-venv/bin/activate
+sudo dpkg -i cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb
 ```
 
 ```bash
-pip install --upgrade pip setuptools wheel
+sudo cp /var/cudnn-local-repo-ubuntu2204-9.11.0/cudnn-local-4EC753EA-keyring.gpg /usr/share/keyrings/
 ```
 
 ```bash
-pip install -e .
+echo "deb [signed-by=/usr/share/keyrings/cudnn-local-4EC753EA-keyring.gpg] file:///var/cudnn-local-repo-ubuntu2204-9.11.0 /" | sudo tee /etc/apt/sources.list.d/cudnn-local.list
 ```
+
+```bash
+sudo apt update
+```
+
+```bash
+sudo apt install -y libcudnn9 libcudnn9-dev
+```
+
+```bash
+# Add CUDA libraries to your path and reload
+echo 'export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+```
+
+```bash
+source ~/.bashrc
+```
+
+---
+
+### 📦 Step 4: Install Poetry (Python Dependency Manager)
+
+```bash
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+```bash
+echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+```
+
+```bash
+source ~/.bashrc
+```
+
+```bash
+poetry --version
+```
+
+---
+
+### 🧰 Step 5: Install psutil, readchar, and rich
 
 ```bash
 pip install psutil readchar rich
 ```
 
-Verify Malmo installed:
-
-```bash
-python -c "import pkgutil; print('malmo' in [m.name for m in pkgutil.iter_modules()])"
-```
-
-Should show: `True`
-
 ---
 
-### Step 9: Login to Gensyn
+### 🔐 Step 6: Login to Gensyn Modal
+
+**1)** First, go to the modal-login directory and start the login server:
 
 ```bash
 cd modal-login
@@ -183,132 +218,150 @@ yarn install
 yarn dev
 ```
 
-Open browser to `http://localhost:3000` and login.
+**2)** Open your browser at `http://localhost:3000` and log in to Gensyn.
 
-After login, press `Ctrl+C` in terminal, then:
-
-```bash
-cd ~/blockassist
-```
-
----
-
-### Step 10: Run BlockAssist
+**After login enter `Ctrl+C` on your terminal and run:**
 
 ```bash
-source blockassist-venv/bin/activate
+cd
 ```
-
-```bash
-python3 run.py
-```
-
-When prompted, paste your **Hugging Face API token**.
-
-First run takes 5-10 minutes. Two Minecraft windows will open - don't close them!
-
----
-
-## 🔄 Running Again Later
-
-Copy and run this entire block:
 
 ```bash
 cd blockassist
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init - bash)"
-eval "$(pyenv virtualenv-init -)"
-source blockassist-venv/bin/activate
-python3 run.py
 ```
 
 ---
 
-## ⚡ Optional: GPU Acceleration
+### 🧩 Step 7: Activate Environment & Install BlockAssist Locally (Malmo Fix) 🛠️
 
-**For NVIDIA GPU users only** - skip if you don't have an NVIDIA GPU:
+**1)** Activate the same venv
 
 ```bash
-# Download cuDNN
-wget https://developer.download.nvidia.com/compute/cudnn/9.11.0/local_installers/cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb
+python3 -m venv blockassist-venv
 ```
 
 ```bash
-# Install package
-sudo dpkg -i cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb
+source blockassist-venv/bin/activate
 ```
 
-```bash
-# Add GPG key
-sudo cp /var/cudnn-local-repo-ubuntu2204-9.11.0/cudnn-local-4EC753EA-keyring.gpg /usr/share/keyrings/
-```
+**2)** Make sure build tools are fine
 
 ```bash
-# Configure repository
-echo "deb [signed-by=/usr/share/keyrings/cudnn-local-4EC753EA-keyring.gpg] file:///var/cudnn-local-repo-ubuntu2204-9.11.0 /" | sudo tee /etc/apt/sources.list.d/cudnn-local.list
+python -m pip install --upgrade pip setuptools wheel
 ```
 
+**3)** Install the repo in editable mode so Python can import its packages (including `malmo`)
+
 ```bash
-# Install cuDNN
+pip install -e .
+```
+
+**Check if malmo is available**
+
+```bash
+python - <<'PY'
+import pkgutil
+print('malmo' in [m.name for m in pkgutil.iter_modules()])
+PY
+```
+
+**4)** Install Zip Utilities
+
+```bash
 sudo apt update
 ```
 
 ```bash
-sudo apt install -y libcudnn9 libcudnn9-dev
+sudo apt install -y zip unzip
 ```
 
-```bash
-# Set library path
-echo 'export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
-```
+**5)** Now run BlockAssist:
 
 ```bash
-source ~/.bashrc
+python3 run.py
 ```
 
 ---
 
-## 🔧 Quick Fixes
+## Now it will ask for Hugging Face token: `Paste your token`
 
-**Test if GUI works?**
+## And soon your Minecraft game will open
+
+> **Note:** Windows 11 WSL2 has native GUI support! Minecraft windows open automatically without needing VcXsrv or any X server.
+
+`1. Press Enter in the terminal again.`
+
+`2. Select your game screen, then press Enter again inside the screen.`
+
+---
+
+## 🚀 How To Start BlockAssist the Next Day
+
+Follow these steps whenever you want to restart BlockAssist after shutdown:
+
 ```bash
+cd blockassist
+
+# Configure pyenv environment variables
+export PYENV_ROOT="$HOME/.pyenv"
+[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init - bash)"
+eval "$(pyenv virtualenv-init -)"
+```
+
+Now run BlockAssist:
+
+```bash
+source blockassist-venv/bin/activate
+```
+
+```bash
+python3 run.py
+```
+
+---
+
+## 🔧 Troubleshooting
+
+### GUI Not Working?
+
+Windows 11 WSL2 handles GUI automatically. If Minecraft doesn't open:
+
+```bash
+# Test GUI support
 sudo apt install -y x11-apps
+```
+
+```bash
 xeyes
 ```
-A small window with eyes should appear.
 
-**Minecraft won't open?**
+If that doesn't work:
+
 ```bash
 export DISPLAY=:0
 ```
 
-**"pyenv: command not found"?**
-```bash
-source ~/.bashrc
-```
+### Graphics Issues?
 
-**"Module 'malmo' not found"?**
-```bash
-cd ~/blockassist
-source blockassist-venv/bin/activate
-pip install -e .
-```
+Enable software rendering:
 
-**Need to restart fresh?**
 ```bash
-rm -rf ~/blockassist
-# Then start again from Step 7
+export LIBGL_ALWAYS_SOFTWARE=1
+export MESA_LOADER_DRIVER_OVERRIDE=llvmpipe
+export LIBGL_ALWAYS_INDIRECT=1
+export MESA_GL_VERSION_OVERRIDE=2.1
 ```
 
 ---
 
-## 📚 Need Help?
+## 📚 Resources
 
-- [Official Docs](https://docs.gensyn.ai/)
-- [Discord Community](https://discord.gg/gensyn)
-- [GitHub Issues](https://github.com/gensyn-ai/blockassist/issues)
+- [Official Gensyn Documentation](https://docs.gensyn.ai/)
+- [BlockAssist GitHub](https://github.com/gensyn-ai/blockassist)
+- [Hugging Face](https://huggingface.co/)
+- [Get HuggingFace Token](https://huggingface.co/settings/tokens)
 
 ---
 
-**That's it! Start building with AI! 🎮✨**
+**Happy building with Gensyn BlockAssist! 🎮✨**
