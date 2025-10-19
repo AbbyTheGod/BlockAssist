@@ -60,14 +60,9 @@ Windows 11 with WSL2 has built-in GUI support, so no additional X server is need
    sudo apt install -y openjdk-8-jdk
    java -version
    ```
+   > **Note:** You should see "openjdk version 1.8.x" confirming Java 8 is installed correctly
 
-5. **Run the Setup Script:**
-   ```bash
-   chmod +x setup.sh
-   ./setup.sh
-   ```
-
-6. **Install and Configure `pyenv`:**
+5. **Install and Configure `pyenv`:**
    ```bash
    curl -fsSL https://pyenv.run | bash
    export PYENV_ROOT="$HOME/.pyenv"
@@ -78,10 +73,16 @@ Windows 11 with WSL2 has built-in GUI support, so no additional X server is need
    source ~/.bashrc
    ```
 
-7. **Install Python 3.10:**
+6. **Install Python 3.10:**
    ```bash
    pyenv install 3.10.0
    pyenv global 3.10.0
+   ```
+
+7. **Run the Setup Script:**
+   ```bash
+   chmod +x setup.sh
+   ./setup.sh
    ```
 
 8. **Install Node Version Manager (NVM) and Node.js:**
@@ -103,7 +104,44 @@ Windows 11 with WSL2 has built-in GUI support, so no additional X server is need
    yarn -v
    ```
 
-### Step 4: Configure Display Settings (Optional)
+10. **Install Poetry (Python Dependency Manager - Optional):**
+    ```bash
+    curl -sSL https://install.python-poetry.org | python3 -
+    echo 'export PATH="$HOME/.local/bin:$PATH"' >> ~/.bashrc
+    source ~/.bashrc
+    poetry --version
+    ```
+    > **Note:** Poetry is optional and mainly for advanced dependency management. This guide uses pip/venv which works perfectly fine for BlockAssist.
+
+### Step 4: Install CUDA/cuDNN for GPU Support (Optional)
+
+**For users with NVIDIA GPUs who want hardware acceleration:**
+
+1. **Download and Install cuDNN:**
+   ```bash
+   wget https://developer.download.nvidia.com/compute/cudnn/9.11.0/local_installers/cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb
+   sudo dpkg -i cudnn-local-repo-ubuntu2204-9.11.0_1.0-1_amd64.deb
+   sudo cp /var/cudnn-local-repo-ubuntu2204-9.11.0/cudnn-local-4EC753EA-keyring.gpg /usr/share/keyrings/
+   ```
+
+2. **Add cuDNN Repository:**
+   ```bash
+   echo "deb [signed-by=/usr/share/keyrings/cudnn-local-4EC753EA-keyring.gpg] file:///var/cudnn-local-repo-ubuntu2204-9.11.0 /" | sudo tee /etc/apt/sources.list.d/cudnn-local.list
+   ```
+
+3. **Install cuDNN Packages:**
+   ```bash
+   sudo apt update
+   sudo apt install -y libcudnn9 libcudnn9-dev
+   ```
+
+4. **Configure CUDA Libraries:**
+   ```bash
+   echo 'export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH' >> ~/.bashrc
+   source ~/.bashrc
+   ```
+
+### Step 5: Configure Display Settings (Optional)
 
 Windows 11 WSL2 handles GUI applications automatically, but you can optionally configure display settings:
 
@@ -121,7 +159,7 @@ Windows 11 WSL2 handles GUI applications automatically, but you can optionally c
    source ~/.bashrc
    ```
 
-### Step 5: Login to Gensyn Modal
+### Step 6: Login to Gensyn Modal
 
 1. **Navigate to Modal Login Directory:**
    ```bash
@@ -139,7 +177,7 @@ Windows 11 WSL2 handles GUI applications automatically, but you can optionally c
    - Log in to your Gensyn Testnet account
    - After login, press `Ctrl+C` to stop the server
 
-### Step 6: Create Virtual Environment and Install Dependencies
+### Step 7: Create Virtual Environment and Install Dependencies
 
 1. **Navigate to the BlockAssist Directory:**
    ```bash
@@ -167,9 +205,20 @@ Windows 11 WSL2 handles GUI applications automatically, but you can optionally c
    ```bash
    sudo apt update
    sudo apt install -y zip unzip
+   which zip && zip -v
    ```
+   > **Verification:** The commands above should display the path to zip and its version information
 
-### Step 7: Run BlockAssist
+6. **Verify Malmo Package Installation:**
+   ```bash
+   python - <<'PY'
+   import pkgutil
+   print('malmo' in [m.name for m in pkgutil.iter_modules()])
+   PY
+   ```
+   This should output `True` if the installation was successful
+
+### Step 8: Run BlockAssist
 
 1. **Start BlockAssist:**
    ```bash
@@ -218,9 +267,22 @@ source ~/.bashrc
 
 ## 📚 Additional Resources
 
+### Official Documentation
 - [Gensyn BlockAssist Documentation](https://docs.gensyn.ai/testnet/blockassist/getting-started/windows-wsl-2)
-- [Hugging Face Platform](https://huggingface.co/)
+- [Gensyn Official Website](https://www.gensyn.ai/)
 - [WSL Official Documentation](https://docs.microsoft.com/en-us/windows/wsl/)
+
+### Tools & Platforms
+- [Hugging Face Platform](https://huggingface.co/)
+- [Hugging Face API Tokens](https://huggingface.co/settings/tokens)
+- [Python Poetry Documentation](https://python-poetry.org/docs/)
+- [Node.js Official Site](https://nodejs.org/)
+- [pyenv GitHub Repository](https://github.com/pyenv/pyenv)
+
+### GPU Support (Optional)
+- [NVIDIA CUDA Toolkit](https://developer.nvidia.com/cuda-toolkit)
+- [cuDNN Downloads](https://developer.nvidia.com/cudnn)
+- [WSL GPU Support Guide](https://docs.microsoft.com/en-us/windows/wsl/tutorials/gpu-compute)
 
 ## 🤝 Getting Help
 
